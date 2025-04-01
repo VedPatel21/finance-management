@@ -11,7 +11,6 @@ import {
 } from "chart.js";
 import "../styles/reports.css";
 
-// Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const options = {
@@ -55,85 +54,113 @@ const Report = () => {
     labels: [],
     datasets: [],
   });
-
-  // Fallback sample data
-  const sampleLabels = ["January", "February", "March", "April", "May", "June"];
-  const sampleFees = [50000, 40000, 60000, 45000, 70000, 55000];
-  const sampleExpenses = [30000, 35000, 40000, 32000, 45000, 38000];
+  const [message, setMessage] = useState(""); // State to display error or no-data messages
 
   useEffect(() => {
-    Promise.all([
-      fetch("http://localhost:5000/students/fees/monthly").then((res) => {
-        if (!res.ok) throw new Error("Fee API error");
+    fetch("http://localhost:5000/api/reports/monthly-financial")
+      .then((res) => {
+        if (!res.ok)
+          throw new Error(`Monthly Financial API error: ${res.statusText}`);
         return res.json();
-      }),
-      fetch("http://localhost:5000/expenses/monthly").then((res) => {
-        if (!res.ok) throw new Error("Expenses API error");
-        return res.json();
-      }),
-    ])
-      .then(([feeData, expenseData]) => {
-        const feeMap = {};
-        feeData.labels.forEach((label, index) => {
-          feeMap[label] = feeData.data[index];
-        });
-
-        const expenseMap = {};
-        expenseData.monthly_expenses.forEach((rec) => {
-          const monthStr = rec.month.toString().padStart(2, "0");
-          const key = `${rec.year}-${monthStr}`;
-          expenseMap[key] = rec.total_expense;
-        });
-
-        const allKeysSet = new Set([...Object.keys(feeMap), ...Object.keys(expenseMap)]);
-        const allKeys = Array.from(allKeysSet).sort();
-
-        const feesArr = allKeys.map((key) => feeMap[key] || 0);
-        const expensesArr = allKeys.map((key) => expenseMap[key] || 0);
-
-        setChartData({
-          labels: allKeys,
-          datasets: [
-            {
-              label: "Fees Collected (₹)",
-              data: feesArr,
-              backgroundColor: "#4CAF50",
-              borderColor: "#388E3C",
-              borderWidth: 1,
-              barThickness: 40,
-              borderRadius: 8,
-            },
-            {
-              label: "Expenses (₹)",
-              data: expensesArr,
-              backgroundColor: "#f44336",
-              borderColor: "#d32f2f",
-              borderWidth: 1,
-              barThickness: 40,
-              borderRadius: 8,
-            },
-          ],
-        });
+      })
+      .then((monthlyData) => {
+        // Check for error or no-data messages in API response
+        if (monthlyData.error) {
+          setMessage(monthlyData.error);
+          setChartData({
+            labels: ["No Data"],
+            datasets: [
+              {
+                label: "Fees Collected (₹)",
+                data: [0],
+                backgroundColor: "#ccc",
+                borderColor: "#aaa",
+                borderWidth: 1,
+                barThickness: 40,
+                borderRadius: 8,
+              },
+              {
+                label: "Expenses (₹)",
+                data: [0],
+                backgroundColor: "#ddd",
+                borderColor: "#bbb",
+                borderWidth: 1,
+                barThickness: 40,
+                borderRadius: 8,
+              },
+            ],
+          });
+        } else if (monthlyData.message) {
+          setMessage(monthlyData.message);
+          setChartData({
+            labels: monthlyData.labels && monthlyData.labels.length ? monthlyData.labels : ["No Data"],
+            datasets: [
+              {
+                label: "Fees Collected (₹)",
+                data: monthlyData.fees && monthlyData.fees.length ? monthlyData.fees : [0],
+                backgroundColor: "#ccc",
+                borderColor: "#aaa",
+                borderWidth: 1,
+                barThickness: 40,
+                borderRadius: 8,
+              },
+              {
+                label: "Expenses (₹)",
+                data: monthlyData.expenses && monthlyData.expenses.length ? monthlyData.expenses : [0],
+                backgroundColor: "#ddd",
+                borderColor: "#bbb",
+                borderWidth: 1,
+                barThickness: 40,
+                borderRadius: 8,
+              },
+            ],
+          });
+        } else {
+          setChartData({
+            labels: monthlyData.labels && monthlyData.labels.length ? monthlyData.labels : ["No Data"],
+            datasets: [
+              {
+                label: "Fees Collected (₹)",
+                data: monthlyData.fees && monthlyData.fees.length ? monthlyData.fees : [0],
+                backgroundColor: "#4CAF50",
+                borderColor: "#388E3C",
+                borderWidth: 1,
+                barThickness: 40,
+                borderRadius: 8,
+              },
+              {
+                label: "Expenses (₹)",
+                data: monthlyData.expenses && monthlyData.expenses.length ? monthlyData.expenses : [0],
+                backgroundColor: "#f44336",
+                borderColor: "#d32f2f",
+                borderWidth: 1,
+                barThickness: 40,
+                borderRadius: 8,
+              },
+            ],
+          });
+        }
       })
       .catch((err) => {
         console.error("Error fetching data: ", err);
+        setMessage("Error loading report. Please try again later.");
         setChartData({
-          labels: sampleLabels,
+          labels: ["No Data"],
           datasets: [
             {
               label: "Fees Collected (₹)",
-              data: sampleFees,
-              backgroundColor: "#4CAF50",
-              borderColor: "#388E3C",
+              data: [0],
+              backgroundColor: "#ccc",
+              borderColor: "#aaa",
               borderWidth: 1,
               barThickness: 40,
               borderRadius: 8,
             },
             {
               label: "Expenses (₹)",
-              data: sampleExpenses,
-              backgroundColor: "#f44336",
-              borderColor: "#d32f2f",
+              data: [0],
+              backgroundColor: "#ddd",
+              borderColor: "#bbb",
               borderWidth: 1,
               barThickness: 40,
               borderRadius: 8,
@@ -146,6 +173,7 @@ const Report = () => {
   return (
     <div className="report-container">
       <h2 className="report-title">Monthly Fees and Expenses Report</h2>
+      {message && <p className="no-data-message">{message}</p>}
       <div className="chart-container">
         <Bar data={chartData} options={options} />
       </div>

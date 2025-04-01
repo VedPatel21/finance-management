@@ -56,13 +56,18 @@ function AddExpense() {
     }
   };
 
+  // Navigate to the view expenses page
+  const handleViewExpenses = () => {
+    navigate("/expenses/view");
+  };
+
   return (
-    <div className="add-expense-container">
+    <div className="add-expense-container container">
       <main className="add-expense">
-        <h2 className="page-title">Add Expense</h2>
+        <h2 className="page-title title">Add Expense</h2>
         {error && <p className="feedback error">{error}</p>}
         {message && <p className="feedback success">{message}</p>}
-        <form onSubmit={handleSubmit} className="form">
+        <form onSubmit={handleSubmit} className="add-expense-form form">
           <div className="form-group">
             <label>Amount:</label>
             <input
@@ -112,7 +117,12 @@ function AddExpense() {
             </select>
           </div>
           <div className="form-actions">
-            <button type="submit">Record Expense</button>
+            <button type="submit" className="button">
+              Record Expense
+            </button>
+            <button type="button" className="button" onClick={handleViewExpenses}>
+              View All Expenses
+            </button>
           </div>
         </form>
       </main>
