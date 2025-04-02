@@ -1,264 +1,311 @@
 :root {
-    --primary-color: #007bff;
-    --secondary-color: #28a745;
-    --text-color: #212529;
-    --bg-color: #f8f9fa;
-    --card-bg: #ffffff;
-    --border-color: #e0e0e0;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --primary-color: #007bff;
+  --primary-hover: #0056b3;
+  --secondary-color: #28a745;
+  --secondary-hover: #218838;
+  --danger-color: #dc3545;
+  --danger-hover: #c82333;
+  --text-color: #212529;
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --transition-speed: 0.3s;
+  --radius: 8px;
+  /* Adjust this to match your navbar's height */
+  --navbar-height: 60px;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* If you have a separate .admin-header or .navbar, 
+   ensure it has a lower z-index than the modal. */
+.admin-header {
+  background-color: var(--card-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  margin-bottom: 2rem;
+  z-index: 1000; /* Example: Nav has z-index 1000 */
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.nav-links button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-left: 1rem;
+  cursor: pointer;
+  transition: color var(--transition-speed) ease;
+}
+
+.nav-links button:hover {
+  color: var(--primary-color);
+}
+
+.manage-students {
+  padding: 0 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 2rem;
+  text-align: center;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+}
+
+.filter-controls {
+  margin-bottom: 1rem;
+}
+
+.filter-controls input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}
+
+.suggestions-list {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+.suggestion-item {
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease;
+}
+
+.suggestion-item:hover {
+  background-color: var(--bg-color);
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.student-card {
+  background-color: var(--card-bg);
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+  margin-bottom: 1.5rem;
+}
+
+.edit-form,
+.student-info {
+  text-align: center;
+}
+
+.edit-form input,
+.edit-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-sizing: border-box;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease;
+  font-size: 1rem;
+}
+
+.form-actions button:first-child {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.form-actions button:first-child:hover {
+  background-color: var(--primary-hover);
+}
+
+.form-actions button:last-child {
+  background-color: var(--danger-color);
+  color: #fff;
+}
+
+.form-actions button:last-child:hover {
+  background-color: var(--danger-hover);
+}
+
+.action-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.action-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease;
+  font-size: 1rem;
+}
+
+.action-buttons button:first-child {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.action-buttons button:first-child:hover {
+  background-color: var(--primary-hover);
+}
+
+.action-buttons button:nth-child(2) {
+  background-color: var(--secondary-color);
+  color: #fff;
+}
+
+.action-buttons button:nth-child(2):hover {
+  background-color: var(--secondary-hover);
+}
+
+.action-buttons button:last-child {
+  background-color: var(--danger-color);
+  color: #fff;
+}
+
+.action-buttons button:last-child:hover {
+  background-color: var(--danger-hover);
+}
+
+.feedback {
+  text-align: center;
+  margin: 1rem 0;
+  font-weight: 500;
+}
+
+.feedback.error {
+  color: var(--danger-color);
+}
+
+.feedback.success {
+  color: var(--secondary-color);
+}
+
+/* 
+  Updated modal styling to ensure it appears beneath the navbar 
+  and is fully visible. The z-index is set higher than the navbar.
+  Adjust --navbar-height as needed. 
+*/
+.modal {
+  position: fixed;
+  top: var(--navbar-height);
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--navbar-height));
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  /* If you prefer it truly centered, remove 'top' 
+     and 'height' and revert to top:0; align-items:center; 
+     but ensure the navbar has a lower z-index. */
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  padding: 24px;
+  border-radius: calc(var(--radius) + 2px);
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 12px 32px var(--shadow-color);
+  animation: fadeIn var(--transition-speed) ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
   }
-  
-  body {
-    font-family: var(--font-family);
-    background-color: var(--bg-color);
-    margin: 0;
-    padding: 0;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .admin-header {
-    background-color: var(--card-bg);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    margin-bottom: 2rem;
-  }
-  
-  .logo {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--primary-color);
-  }
-  
-  .nav-links button {
-    background: none;
-    border: none;
-    font-size: 1rem;
-    color: var(--text-color);
-    margin-left: 1rem;
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-  
-  .nav-links button:hover {
-    color: var(--primary-color);
-  }
-  
-  .manage-students {
-    padding: 0 2rem;
-  }
-  
-  .page-title {
-    font-size: 2rem;
-    text-align: center;
-    color: var(--text-color);
-    margin-bottom: 0.5rem;
-  }
-  
-  .subtitle {
-    font-size: 1.2rem;
-    text-align: center;
-    color: var(--text-color);
-    margin-bottom: 1.5rem;
-  }
-  
-  .filter-controls input {
-    width: 100%;
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    margin-bottom: 1rem;
-  }
-  
-  .suggestions-list {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    max-height: 200px;
-    overflow-y: auto;
-    margin-bottom: 1rem;
-  }
-  
-  .suggestion-item {
-    padding: 10px;
-    border-bottom: 1px solid var(--border-color);
-    cursor: pointer;
-  }
-  
-  .suggestion-item:last-child {
-    border-bottom: none;
-  }
-  
-  .student-card {
-    background-color: var(--card-bg);
-    padding: 1.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    margin-bottom: 1.5rem;
-  }
-  
-  .edit-form,
-  .student-info {
-    text-align: center;
-  }
-  
-  .edit-form input,
-  .edit-form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-  }
-  
-  .form-actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .form-actions button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .form-actions button:first-child {
-    background-color: var(--primary-color);
-    color: #fff;
-  }
-  
-  .form-actions button:first-child:hover {
-    background-color: #0056b3;
-  }
-  
-  .form-actions button:last-child {
-    background-color: #dc3545;
-    color: #fff;
-  }
-  
-  .form-actions button:last-child:hover {
-    background-color: #c82333;
-  }
-  
-  .action-buttons {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .action-buttons button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .action-buttons button:first-child {
-    background-color: var(--primary-color);
-    color: #fff;
-  }
-  
-  .action-buttons button:first-child:hover {
-    background-color: #0056b3;
-  }
-  
-  .action-buttons button:last-child {
-    background-color: var(--secondary-color);
-    color: #fff;
-  }
-  
-  .action-buttons button:last-child:hover {
-    background-color: #218838;
-  }
-  
-  .feedback {
-    text-align: center;
-    margin: 1rem 0;
-  }
-  
-  .feedback.error {
-    color: #dc3545;
-  }
-  
-  .feedback.success {
-    color: #28a745;
-  }
-  
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-  }
-  
-  .modal-content {
-    background-color: var(--card-bg);
-    padding: 24px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 12px 32px var(--shadow-color);
-    animation: fadeIn 0.3s ease;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-12px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .history-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-  }
-  
-  .history-table th,
-  .history-table td {
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    text-align: center;
-    font-size: 0.9rem;
-  }
-  
-  .history-table th {
-    background-color: var(--primary-color);
-    color: #fff;
-    font-weight: 600;
-  }
-  
-  .close-btn {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #6c757d;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .close-btn:hover {
-    background-color: #5a6268;
-  }
-  
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.history-table th,
+.history-table td {
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.history-table th {
+  background-color: var(--primary-color);
+  color: #fff;
+  font-weight: 600;
+}
+
+.close-btn {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease;
+  font-size: 1rem;
+}
+
+.close-btn:hover {
+  background-color: #5a6268;
+}

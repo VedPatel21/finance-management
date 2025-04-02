@@ -65,6 +65,19 @@ function AllStudents() {
     }
   };
 
+  // New function to handle deleting all students
+  const handleDeleteAllStudents = async () => {
+    if (!window.confirm("Are you sure you want to delete all students? This action cannot be undone.")) {
+      return;
+    }
+    try {
+      await api.delete("/students/delete_all");
+      fetchStudents();
+    } catch (error) {
+      console.error("Error deleting all students:", error);
+    }
+  };
+
   const handleEdit = (student) => {
     setEditingStudent(student);
     setFormData({
@@ -122,6 +135,13 @@ function AllStudents() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+          {/* New Delete All Students button */}
+          <button
+            className="delete-all-btn"
+            onClick={handleDeleteAllStudents}
+          >
+            Delete All Students
+          </button>
         </div>
         {Object.keys(groupedStudents).length === 0 ? (
           <p>No students found.</p>
